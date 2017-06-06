@@ -274,14 +274,14 @@ class IPythonKernel(KernelBase):
 
     def _experimental_do_complete(self, code, cursor_pos):
         """
-        Experimental completions from IPython, using Jedi. 
+        Experimental completions from IPython, using Jedi.
         """
         if cursor_pos is None:
             cursor_pos = len(code)
         with provisionalcompleter():
             raw_completions = self.shell.Completer.completions(code, cursor_pos)
             completions = list(rectify_completions(code, raw_completions))
-            
+
             comps = []
             for comp in completions:
                 comps.append(dict(
@@ -289,6 +289,7 @@ class IPythonKernel(KernelBase):
                             end=comp.end,
                             text=comp.text,
                             type=comp.type,
+                            signature=getattr(comp, 'signature', '')
                 ))
 
         if completions:
